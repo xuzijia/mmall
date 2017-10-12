@@ -22,4 +22,10 @@ public interface UserService {
 	ServerResponse<User> login(User user);
 	ServerResponse<String> register(User user);
 	ServerResponse<String> checkValid(String str,String type);
+	ServerResponse<User> findUserByUsername(String username);
+	ServerResponse<String> getQuestion(String username);
+	ServerResponse<String> checkAnswer(String username,String question,String answer);
+	ServerResponse<String> forgetPassword(String username,String newPassword,String Usertoken);
+	ServerResponse<String> resetPassword(String username,String passwordOld,String passwordNew);
+	ServerResponse<User> updateUserInfo(User user);
 }
