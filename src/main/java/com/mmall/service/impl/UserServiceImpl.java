@@ -248,4 +248,13 @@ public class UserServiceImpl implements UserService {
 		return ServerResponse.createByErrorMessage("更新个人信息失败");
 	}
 
+	//校验是否为后台管理员
+	public ServerResponse<String> checkAdminRole(User user){
+		if(user!=null && user.getRole()==Const.ROLE_ADMIN){
+			return ServerResponse.createBySuccess();
+		}
+		return ServerResponse.createByError();
+		
+	}
+	
 }

@@ -33,6 +33,8 @@ public interface CartMapper {
 
 
     List<Cart> selectCheckedCartByUserId(Integer userId);
+    
+    
 
 
 }
