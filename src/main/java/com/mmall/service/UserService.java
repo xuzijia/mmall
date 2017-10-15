@@ -29,4 +29,6 @@ public interface UserService {
 	ServerResponse<String> resetPassword(String username,String passwordOld,String passwordNew);
 	ServerResponse<User> updateUserInfo(User user);
 	ServerResponse<String> checkAdminRole(User user);
+	ServerResponse<String> forgetByEmail(String email, String path);
+	ServerResponse checkEmailToken(String username,String token );
 }

@@ -1,7 +1,11 @@
 package com.mmall.service.impl;
 
+import java.util.Map;
 import java.util.UUID;
 
+import javax.mail.MessagingException;
+
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +16,7 @@ import com.mmall.common.TokenCache;
 import com.mmall.dao.UserMapper;
 import com.mmall.pojo.User;
 import com.mmall.service.UserService;
+import com.mmall.util.EmailUtils;
 import com.mmall.util.MD5Util;
 
 /**   
@@ -246,6 +251,58 @@ public class UserServiceImpl implements UserService {
 			return ServerResponse.createBySuccess("更新个人信息成功", updateUser);
 		}
 		return ServerResponse.createByErrorMessage("更新个人信息失败");
+	}
+
+	
+	/**
+	 * 忘记密码发送邮件
+	 */
+	public ServerResponse<String> forgetByEmail(String email,String path) {
+		//校验邮箱是否存在
+		User user = userMapper.findUserByEmail(email);
+		if(user!=null){
+			//存在 发送邮件
+			String forgetToken = UUID.randomUUID().toString();
+			TokenCache.setKey(TokenCache.TOKEN_PREFIX + user.getUsername(), forgetToken);
+			try {
+				path+="?token="+forgetToken+"&username="+user.getUsername();
+				EmailUtils.send(email,path);
+				return ServerResponse.createBySuccess();
+			} catch (MessagingException e) {
+				return ServerResponse.createByErrorMessage("发送邮箱失败");
+			}
+			
+		}
+		return ServerResponse.createByErrorMessage("该邮箱不存在");
+	}
+	/**
+	 * 验证email中的token
+	 */
+	public ServerResponse checkEmailToken(String username,String forgetToken) {
+		if (StringUtils.isBlank(forgetToken)) {
+			return ServerResponse.createByErrorMessage("参数错误,token需要传递");
+		}
+		int i=userMapper.checkUsername(username);
+		if(i>0){
+			String token = TokenCache.getKey(TokenCache.TOKEN_PREFIX + username);
+			if(StringUtils.isBlank(token)){
+				return ServerResponse.createByErrorMessage("token无效或者token过期");
+			}
+			if(StringUtils.equals(forgetToken, token)){
+				//token验证成功
+				Map<String,Object> map=new HashedMap();
+				map.put("username", username);
+				map.put(token, token);
+				return ServerResponse.createBySuccess(map);
+			}
+			else{
+				return ServerResponse.createByErrorMessage("token不匹配");
+			}
+			
+			
+		}
+		return ServerResponse.createByErrorMessage("用户名不存在");
+		
 	}
 
 	//校验是否为后台管理员
