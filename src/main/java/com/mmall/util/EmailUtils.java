@@ -10,6 +10,8 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import com.mmall.common.Const;
+
 /**   
 *    
 * 项目名称：mmall   
@@ -48,13 +50,13 @@ public class EmailUtils {
         // 设置邮件内容  
         msg.setText("重置密码请请点击该连接进行重置 ========--------------------=========token:"+path);  
         // 设置发件人  
-        msg.setFrom(new InternetAddress("13049257683@163.com"));  
+        msg.setFrom(new InternetAddress(Const.EMAIL_SEND_USER));  
           
         Transport transport = session.getTransport();  
         // 连接邮件服务器  
-        transport.connect("smtp.163.com","13049257683@163.com","xuzijia123");  
+        transport.connect(Const.EMAIL_HOST,Const.EMAIL_USERNAME,Const.EMAIL_PASSWORD);  
         // 发送邮件  
-        transport.sendMessage(msg, new Address[] {new InternetAddress("2295443695@qq.com")});  
+        transport.sendMessage(msg, new Address[] {new InternetAddress(accepter)});  
         // 关闭连接  
         transport.close();  
     }  

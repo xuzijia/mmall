@@ -3,6 +3,7 @@ package com.mmall.service;
 import org.springframework.stereotype.Service;
 
 import com.mmall.common.ServerResponse;
+import com.mmall.pojo.Product;
 import com.mmall.pojo.User;
 
 /**   
@@ -31,4 +32,5 @@ public interface UserService {
 	ServerResponse<String> checkAdminRole(User user);
 	ServerResponse<String> forgetByEmail(String email, String path);
 	ServerResponse checkEmailToken(String username,String token );
+	
 }

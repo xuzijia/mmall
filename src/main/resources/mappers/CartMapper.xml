@@ -140,18 +140,13 @@
   </select>
   
   
-  <delete id="deleteByUserIdProductIds" parameterType="map">
-    delete from mmall_cart
-    where user_id = #{userId}
-    <if test="productIdList != null">
-      and product_id in
-      <foreach collection="productIdList" item="item" index="index" open="(" separator="," close=")">
-        #{item}
-      </foreach>
-    </if>
+  <delete id="clearCartByUserId" parameterType="int">
+  	delete from mmall_cart where user_id=#{userId}
   </delete>
 
-
+<delete id="deleteByCartId" parameterType="map">
+	delete from mmall_cart where id=#{cartId} and user_id=#{userId}
+</delete>
 
   <update id="checkedOrUncheckedProduct" parameterType="map">
     UPDATE  mmall_cart
@@ -181,8 +176,18 @@
 
 
 
+<update id="selectOrUnSelect" parameterType="map">
+	update mmall_cart set checked=#{checked},update_time=now()
+	where user_id=#{userId} 
+	<if test="productId!=null">
+		and product_id=#{productId}
+	</if>
+</update>
 
-
+<select id="selectCartCount" parameterType="string" resultType="int">
+	select IFNULL(count(quantity),0) from mmall_cart where user_id=#{userId}
+</select>
+ 
 
 
 

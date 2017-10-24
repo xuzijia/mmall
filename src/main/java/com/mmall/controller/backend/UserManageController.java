@@ -33,7 +33,7 @@ public class UserManageController {
 	@Autowired
 	private UserService userService;
 	
-	@RequestMapping(value="login.do",method=RequestMethod.POST)
+	@RequestMapping(value="login.do")
 	@ResponseBody
 	public ServerResponse<User> login(User user,HttpSession session){
 		ServerResponse<User> response = userService.login(user);

@@ -9,4 +9,5 @@ public interface CategoryService {
 	 ServerResponse<String> addCategory(String categoryName,Integer parentId);
 	 ServerResponse<String> updateCategory(Category category);
 	 ServerResponse<List<Category>> getCategory(Integer parentId);
+	 public ServerResponse<List<Integer>> selectCategoryAndChildrenById(Integer categoryId);
 }
