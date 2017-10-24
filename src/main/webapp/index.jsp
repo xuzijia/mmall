@@ -18,6 +18,5 @@ springmvc上传文件
     <input type="file" name="upload_file" />
     <input type="submit" value="富文本图片上传文件" />
 </form>
-修改啦
 </body>
 </html>
